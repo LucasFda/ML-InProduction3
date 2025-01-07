@@ -1,0 +1,41 @@
+services:
+  prometheus:
+    image: prom/prometheus:v3.1.0
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./alert.rules.yml:/etc/prometheus/alert.rules.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - monitoring
+
+  alertmanager:
+    image: prom/alertmanager:v0.27.0
+    container_name: alertmanager
+    volumes:
+      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9093:9093"
+    networks:
+      - monitoring
+
+  log_scraper:
+    build: ./scripts  # Indique le chemin vers le Dockerfile dans le dossier 'scripts'
+    container_name: log_scraper
+    ports:
+      - "3002:3002"  # Assurez-vous que le port 3002 est exposé
+    volumes:
+      - ./backend/logs:/usr/src/app/backend/logs  # Monter le dossier des logs ici  # Montez le dossier des logs dans le conteneur
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge
+
+
+
+
+
+

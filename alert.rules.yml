@@ -1,0 +1,36 @@
+groups:
+  - name: example-alerts
+    rules:
+      - alert: HighMemoryUsage
+        expr: process_resident_memory_bytes > 1000000
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High memory usage detected."
+          description: "Memory usage exceeded 10MB for 1 minute."
+
+      - alert: HighCPUUsage
+        expr: process_cpu_seconds_total > 0.1
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage detected."
+          description: "CPU usage exceeded 10% for 1 minute."
+
+  - name: log-alerts
+    rules:
+      - alert: HighErrorLogCount
+        expr: log_error_count > 10
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High error log count detected."
+          description: "More than 10 error logs detected within a minute."
+
+
+
+
+
